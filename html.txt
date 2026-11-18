@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arctic Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #f5fbff;
+      font: 16px/1.5 system-ui, sans-serif;
+      background:
+        linear-gradient(120deg, rgba(5, 23, 45, .78), rgba(11, 65, 91, .55)),
+        url("https://images.unsplash.com/photo-1517299321609-52687d1bc55a?auto=format&fit=crop&w=2000&q=85")
+        center / cover fixed;
+    }
+
+    header, main { width: min(950px, 92%); margin: auto; }
+
+    header {
+      padding: 28px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    h1 { margin: 0; font-size: 2rem; letter-spacing: .08em; }
+
+    nav { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    button, .visit {
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: white;
+      background: rgba(255,255,255,.12);
+      font: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    button:hover, button[aria-current="page"], .visit:hover {
+      background: rgba(180, 231, 255, .3);
+    }
+
+    main { padding: 9vh 0 40px; }
+
+    .panel {
+      max-width: 650px;
+      padding: clamp(24px, 5vw, 48px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 24px;
+      background: rgba(4, 25, 45, .64);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      backdrop-filter: blur(12px);
+    }
+
+    .eyebrow { color: #bceaff; text-transform: uppercase; letter-spacing: .15em; }
+    h2 { margin: 8px 0; font-size: clamp(2rem, 6vw, 3.5rem); }
+    p { color: #d7eaf4; }
+    .visit { display: inline-block; margin-top: 12px; }
+    footer { width: min(950px, 92%); margin: 0 auto; color: #d7eaf4; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>❄ ARCTIC</h1>
+    <nav aria-label="Pages">
+      <button data-page="home" aria-current="page">Home</button>
+      <button data-page="tiktok">TikTok</button>
+      <button data-page="youtube">YouTube</button>
+      <button data-page="fortnite">Fortnite</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="panel" aria-live="polite">
+      <div class="eyebrow" id="eyebrow">Welcome to the chill zone</div>
+      <h2 id="title">Explore Arctic</h2>
+      <p id="description">Choose a page above to get started.</p>
+      <a class="visit" id="visit" href="#" target="_blank" rel="noopener noreferrer" hidden>
+        Visit official site ↗
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    Arctic is a navigation hub; external sites open in a new tab.
+  </footer>
+
+  <script>
+    const pages = {
+      home: {
+        eyebrow: "Welcome to the chill zone",
+        title: "Explore Arctic",
+        description: "Choose a page above to get started."
+      },
+      tiktok: {
+        eyebrow: "Short videos",
+        title: "TikTok",
+        description: "Open TikTok’s official website in a new tab.",
+        url: "https://www.tiktok.com/"
+      },
+      youtube: {
+        eyebrow: "Videos and creators",
+        title: "YouTube",
+        description: "Open YouTube’s official website in a new tab.",
+        url: "https://www.youtube.com/"
+      },
+      fortnite: {
+        eyebrow: "Games and updates",
+        title: "Fortnite",
+        description: "Open Fortnite’s official website in a new tab.",
+        url: "https://www.fortnite.com/"
+      }
+    };
+
+    const eyebrow = document.querySelector("#eyebrow");
+    const title = document.querySelector("#title");
+    const description = document.querySelector("#description");
+    const visit = document.querySelector("#visit");
+
+    document.querySelectorAll("[data-page]").forEach(button => {
+      button.addEventListener("click", () => {
+        const page = pages[button.dataset.page];
+        eyebrow.textContent = page.eyebrow;
+        title.textContent = page.title;
+        description.textContent = page.description;
+
+        document.querySelectorAll("[data-page]").forEach(item =>
+          item.removeAttribute("aria-current")
+        );
+        button.setAttribute("aria-current", "page");
+
+        visit.hidden = !page.url;
+        if (page.url) visit.href = page.url;
+      });
+    });
+  </script>
+</body>
+</html>
